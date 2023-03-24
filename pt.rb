@@ -8,7 +8,7 @@ class InputGathering
       opts.banner = "Usage: pt.rb [options]"
 
       #displays when run with --help flag, or nothing
-      opts.on("-k, a, b, c", String, "What kind of sound are you going for?") do |keywords_str|
+      opts.on("-m, a, b, c", String, "What kind of sound are you going for?") do |keywords_str|
         #split the string up into an array
         keywords_array = keywords_str.split(",")
         #check for proper formatting, like something[something]
@@ -40,7 +40,7 @@ class InputGathering
   end
 $ig = InputGathering.new()
   def you_screwed_up()
-    puts("Add arguments like -k something[emotion] \nand any additional arguments seperated by a comma(no space between)")
+    puts("Add arguments like -m something[emotion] \nand any additional arguments seperated by a comma(no space between)")
     puts(@parser)
     $ig.parse_keywords()
   end
