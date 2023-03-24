@@ -1,9 +1,9 @@
 require 'optparse'
+selecting = true
 
 class InputGathering
+
   def parse_keywords
-    # Store any cmd flags
-    c_args = {}
 
     @parser = OptionParser.new do |opts|
       opts.banner = "Usage: pt.rb [options]"
@@ -12,9 +12,9 @@ class InputGathering
       # Keywords arg is whatever the user passed after k
       opts.on("-k, a, b, c", String, "What kind of sound are you going for?") do |keywords_str|
         keywords_array = keywords_str.split(",")
-        c_args[:keywords] = keywords_array.map do |keyword|
+        keywords_array.map do |keyword|
           if keyword.match?(/\A\w+\[[\w\s]+\]\z/)
-            return keywords_array
+           return keywords_array
           else
             you_screwed_up()
           end
@@ -37,7 +37,6 @@ class InputGathering
         you_screwed_up()
     end
 
-    return c_args
   end
 $ig = InputGathering.new()
   def you_screwed_up()
@@ -46,13 +45,21 @@ $ig = InputGathering.new()
     $ig.parse_keywords()
   end
 end
-
-
-
+=begin
+      puts("Add more? (y if yes)")
+            again = gets.chomp()
+            if (again == "y")
+              $ig.parse_keywords()
+            else 
+              selecting = false
+            end
+=end
 #loop it until the user is done
 #while (selecting)
-$ig.parse_keywords()
-
+  x = $ig.parse_keywords()
+  puts(x)
+   
+#end
 
 
 
