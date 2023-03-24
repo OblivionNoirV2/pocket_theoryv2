@@ -89,8 +89,8 @@ $ig = InputGathering.new()
   end
 end
 
-input_array = $ig.parse_keywords()
-puts(input_array)
+$input_array = $ig.parse_keywords()
+
 #flag options: scales, intervals, chords [emotion]
 #other flag options, intervals (flagged with minor, major, etc)
 
@@ -99,13 +99,25 @@ puts(input_array)
 class Results
 
   def initialize()
-    @input_array = input_array
 
     @scales = {
       "happy" => ["Major(Ionian)", "Lydian"],
       "sad" => ["Minor(Aeolian)", "Melodic Minor", "Harmonic Minor", "Phrygian"],
       "dissonant" => ["Locrian", "Super Locrian", "Chromatic"],
-      "other" => ["Dorian", "Mixolydian", "Whole Tone", ""]
+      "other" => ["Dorian", "Mixolydian", "Whole Tone", "Hirajoshi"]
+    }
+
+    @chords = {
+      "happy" => ["Major Triad"],
+      "sad" => ["Minor Triad"],
+      "dissonant" => ["Diminished, Augmented"],
+      "other" => ["Power chords", "sus2", "sus4", "7ths and beyond", "Inversions"]
+   }
+    @intervals = {
+      "happy" => ["Major 2nd", "Major 3rd", "Major 6th", "Major 7th"],
+      "sad" => ["Minor 2nd", "Minor 3rd", "Minor 6th", "Minor 7th"],
+      "dissonant" => "[Dimninished, Augmented]",
+      "other" => ["Perfect 1st", "Perfect 4th", "Perfect 5th", "Perfect 8th"]
     }
   end
 
@@ -113,9 +125,11 @@ class Results
 
   end
   #give descriptions of each match, how to formulate it
-  def evaluate()
-
+  def evaluate(what_is_being_evaluated)
+    puts($input_array)
   end
   
 end
 
+rs = Results.new()
+rs.evaluate($input_array)
