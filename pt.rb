@@ -16,7 +16,7 @@ class InputGathering
           if keyword.match?(/\A\w+\[[\w\s]+\]\z/)
             return keywords_array
           else
-            raise OptionParser::InvalidArgument, "Invalid keyword format: #{keyword}"
+            you_screwed_up()
           end
         end
       end
@@ -34,25 +34,25 @@ class InputGathering
       rescue OptionParser::InvalidOption => wrong_keyword
         you_screwed_up()
       rescue OptionParser::InvalidArgument => invalid_argument
-        you_screwed_up(invalid_argument.message)
+        you_screwed_up()
     end
 
     return c_args
   end
-
+$ig = InputGathering.new()
   def you_screwed_up()
     puts("Add arguments like -k something[emotion] \nand any additional arguments seperated by a comma")
     puts(@parser)
-    exit
+    $ig.parse_keywords()
   end
 end
 
 
-ig = InputGathering.new()
+
 #loop it until the user is done
 #while (selecting)
-  options = ig.parse_keywords()
-  puts(options)
+$ig.parse_keywords()
+
 
 
 
