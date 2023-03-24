@@ -1,7 +1,8 @@
 require 'optparse'
 
 class InputGathering
-
+  attr_reader :emotion_used, :concept_used
+  
   def initialize()
     #use other to display less common modes that don't fit a particular theme, like hirajoshi or dorian
     @emotions_array = [
@@ -10,6 +11,7 @@ class InputGathering
     @concept_array = [
       "chords", "scales", "intervals"
     ]
+
   end 
   def parse_keywords()
 
@@ -67,6 +69,7 @@ class InputGathering
     @emotions_array.each do |e|
       if keyword.include?(e)
         emotion_found = true
+        $emotion_used = e
         break
       end
     end
@@ -74,6 +77,7 @@ class InputGathering
     @concept_array.each do |c|
       if keyword.include?(c)
         concept_found = true
+        $concept_used = c
         break
       end
     end
@@ -125,11 +129,15 @@ class Results
 
   end
   #give descriptions of each match, how to formulate it
-  def evaluate(what_is_being_evaluated)
-    puts($input_array)
+  def evaluate()
+    #puts($input_array)
+    #fetch the emotion and concept used from the class above
+    ie = InputGathering.new()
+    puts $emotion_used
+    puts $concept_used
   end
   
 end
 
 rs = Results.new()
-rs.evaluate($input_array)
+rs.evaluate()
