@@ -3,8 +3,9 @@ require 'optparse'
 class InputGathering
 
   def initialize()
+    #use other to display less common modes that don't fit a particular theme, like hirajoshi or dorian
     @emotions_array = [
-      "happy", "sad", "dark", "scary", "epic"
+      "happy", "sad", "dissonant", "other"
     ]
     @concept_array = [
       "chords", "scales", "intervals"
@@ -29,6 +30,16 @@ class InputGathering
           end
         end
       end
+      opts.on("-e", "--emotions", "Show the emotions array") do
+        puts(@emotions_array)
+        exit()
+      end
+
+      opts.on("-c", "--concepts", "Show the concepts array") do
+        puts(@concept_array)
+        exit()
+      end
+
       opts.on_tail("-h", "--help", "Show this message") do
         puts(opts)
         exit()
@@ -78,13 +89,33 @@ $ig = InputGathering.new()
   end
 end
 
-
 input_array = $ig.parse_keywords()
 puts(input_array)
 #flag options: scales, intervals, chords [emotion]
 #other flag options, intervals (flagged with minor, major, etc)
 
 #get options from above, then determine what to display 
+#should be easy, just check what it contains and use a switch to match it
+class Results
 
+  def initialize()
+    @input_array = input_array
 
-   
+    @scales = {
+      "happy" => ["Major(Ionian)", "Lydian"],
+      "sad" => ["Minor(Aeolian)", "Melodic Minor", "Harmonic Minor", "Phrygian"],
+      "dissonant" => ["Locrian", "Super Locrian", "Chromatic"],
+      "other" => ["Dorian", "Mixolydian", "Whole Tone", ""]
+    }
+  end
+
+  def display_results()
+
+  end
+  #give descriptions of each match, how to formulate it
+  def evaluate()
+
+  end
+  
+end
+
