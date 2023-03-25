@@ -1,8 +1,6 @@
 require 'optparse'
 
 class InputGathering
-  attr_reader :emotion_used, :concept_used
-  
   def initialize()
     #use other to display less common modes that don't fit a particular theme, like hirajoshi or dorian
     @emotions_array = [
@@ -11,10 +9,10 @@ class InputGathering
     @concept_array = [
       "chords", "scales", "intervals"
     ]
-
+    $concepts_found = []
+    $emotions_found = []
   end 
   def parse_keywords()
-
     @parser = OptionParser.new do |opts|
       opts.banner = "Usage: pt.rb [options]"
 
@@ -22,10 +20,12 @@ class InputGathering
       opts.on("-m, a, b, c", String, "What kind of sound are you going for?") do |keywords_str|
         #split the string up into an array
         keywords_array = keywords_str.split(",")
-        #check for proper formatting, like something[something]
+        #map all keywords to the array
         keywords_array.map do |keyword|
           #also check that it fits the chord/scale/interval[emotion] format
           if keyword.match?(/\A\w+\[[\w\s]+\]\z/) && are_args_included(keyword)
+            #issue is that it returns after only one match is found, need to return 
+            #the array AFTER ensuring all matches are found
             return keywords_array 
           else
             you_screwed_up()
@@ -59,26 +59,29 @@ class InputGathering
     end
 
   end
-
+  #culprit detected: keyword is only the first entry
   def are_args_included(keyword)
   #check if the input contains any of the array options for emotions 
   #and the words chord/scale/interval
     emotion_found = false
     concept_found = false
-
+    puts("Keyword: #{keyword}")
     @emotions_array.each do |e|
+      #Check if the keyword has any matches in the array
       if keyword.include?(e)
+        #then add any found to the corresponding array
+        $emotions_found.push(e)
+        #Then ensure it has found all the matches before it breaks
         emotion_found = true
-        $emotion_used = e
-        break
+      break
       end
     end
 
     @concept_array.each do |c|
       if keyword.include?(c)
+        $concepts_found.push(c)
         concept_found = true
-        $concept_used = c
-        break
+      break
       end
     end
     #This is true if both bools are true
@@ -103,7 +106,6 @@ $input_array = $ig.parse_keywords()
 class Results
 
   def initialize()
-
     @scales = {
       "happy" => ["Major(Ionian)", "Lydian"],
       "sad" => ["Minor(Aeolian)", "Melodic Minor", "Harmonic Minor", "Phrygian"],
@@ -132,9 +134,8 @@ class Results
   def evaluate()
     #puts($input_array)
     #fetch the emotion and concept used from the class above
-    ie = InputGathering.new()
-    puts $emotion_used
-    puts $concept_used
+    puts($concepts_found)
+    puts($emotions_found)
   end
   
 end
