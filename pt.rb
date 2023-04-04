@@ -6,7 +6,7 @@ class InputGathering
   def initialize()
     #use other to display less common modes that don't fit a particular theme, like hirajoshi or dorian
     @emotions_array = [
-      "happy", "sad", "dissonant", "other"
+      "najor", "minor", "dissonant", "other"
     ]
     @concept_array = [
       "chords", "scales", "intervals"
@@ -87,7 +87,7 @@ class InputGathering
 
 $ig = InputGathering.new()
   def you_screwed_up()
-    puts("Add arguments like -m scales/chords/intervals[emotion] \nand any additional arguments seperated by a comma(no space between)")
+    puts("Add arguments like -m scales/chords/intervals[major/minor/dissonant/other] \nand any additional arguments seperated by a comma(no space between)")
     puts(@parser)
     $ig.parse_keywords()
   end
@@ -105,21 +105,43 @@ class Results
   def initialize()
 
     @scales = {
-      "happy" => ["Major(Ionian)", "Lydian"],
-      "sad" => ["Minor(Aeolian)", "Melodic Minor", "Harmonic Minor", "Phrygian"],
-      "dissonant" => ["Locrian", "Super Locrian", "Chromatic"],
+      "major" => ["Major(Ionian): A simple, happy sounding scale.\n
+        Formula: whole, whole, half, whole, whole, whole, half
+        Example: C D E F G A B", 
+        "\nLydian: A happy sounding scale that is similar to major, 
+        but with a raised 4th that can give it a unique, mystical quality.\n
+        Formula: whole, whole, whole, half, whole, whole, half
+        Example: C D E F# G A B"],
+      "minor" => ["\nMinor(Aeolian): A scale that tends to sound sad and dark. Very versatile.\n
+        Formula: whole, half, whole, whole, half, whole
+        Example: C D D# F G G# A#", 
+        "\nMelodic Minor: A slightly brighter minor scale with the unique quality 
+        of sometimes having a different formula ascending and descending.
+        The choice is up to you.\n
+        Formula, ascending: whole, half, whole, whole, whole, whole
+        Formula, descending(same as Aeolian): whole, half, whole, whole, half, whole
+        Example: C D D# F G A B / A# G# G F D# D C", "\nHarmonic Minor: The Aeolian scale with a raised 7th, 
+        which creates a slight sense of darkness and unease. Very Classical sound.\n
+        Formula: whole, half, whole, whole, half, whole + half
+        Example: C D D# F G G# B", "\nPhrygian: Not to be confused with the Phrygian Dominant. 
+        Has a very dark, epic quality to it.\n
+        Formula: half, whole, whole, whole, half, whole
+        Example: C C# D# F G G# A#"],
+      "dissonant" => ["\nLocrian: A tense, very dark scale that can sound unstable or scary.\n
+        Formula: half, whole, whole, half, whole, whole
+        Example: C C# D# F F# G# A#", "Super Locrian", "Chromatic"],
       "other" => ["Dorian", "Mixolydian", "Whole Tone", "Hirajoshi"]
     }
 
     @chords = {
-      "happy" => ["Major Triad"],
-      "sad" => ["Minor Triad"],
+      "major" => ["Major Triad"],
+      "minor" => ["Minor Triad"],
       "dissonant" => ["Diminished", "Augmented"],
       "other" => ["Power chords", "sus2", "sus4", "7ths and beyond", "Inversions"]
    }
     @intervals = {
-      "happy" => ["Major 2nd", "Major 3rd", "Major 6th", "Major 7th"],
-      "sad" => ["Minor 2nd", "Minor 3rd", "Minor 6th", "Minor 7th"],
+      "major" => ["Major 2nd", "Major 3rd", "Major 6th", "Major 7th"],
+      "minor" => ["Minor 2nd", "Minor 3rd", "Minor 6th", "Minor 7th"],
       "dissonant" => ["Diminished", "Augmented"],
       "other" => ["Perfect 1st", "Perfect 4th", "Perfect 5th", "Perfect 8th"]
     }
@@ -129,9 +151,6 @@ class Results
     #puts($input_array)
     #fetch the emotion and concept used from the class above
     ie = InputGathering.new()
-    #puts $emotion_used
-    #puts $concept_used
-
     case $concept_used
       when "scales"
         @scales[$emotion_used].each { |scale| puts scale }
@@ -139,7 +158,8 @@ class Results
         @chords[$emotion_used].each { |chord| puts chord }
       when "intervals"
         @intervals[$emotion_used].each { |interval| puts interval }
-    end  
+    end 
+
   end
 end
 
