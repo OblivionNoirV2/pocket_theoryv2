@@ -6,7 +6,7 @@ class InputGathering
   def initialize()
     #use other to display less common modes that don't fit a particular theme, like hirajoshi or dorian
     @emotions_array = [
-      "najor", "minor", "dissonant", "other"
+      "major", "minor", "dissonant", "other"
     ]
     @concept_array = [
       "chords", "scales", "intervals"
@@ -146,10 +146,34 @@ class Results
     }
 
     @chords = {
-      "major" => ["Major Triad"],
-      "minor" => ["Minor Triad"],
-      "dissonant" => ["Diminished", "Augmented"],
-      "other" => ["Power chords", "sus2", "sus4", "7ths and beyond", "Inversions"]
+      "major" => ["\nMajor Triad: The most basic major chord.\n
+        Formula: root, major 3rd, perfect 5th
+        Example: C E G"],
+      "minor" => ["\nMinor Triad: The most basic minor chord.\n
+        Formula: root, minor 3rd, perfect 5th
+        Example: C D# G"],
+      "dissonant" => ["\nDiminished: Any chord that usually is not dissonant, 
+        with a flattened note to make it so. Tense and unstable.\n
+        Example: C D# F# (a C minor with the 5th flattened)", "\nAugmented: Any chord that usually is not dissonant, 
+        with a raised note to make it so. Tense and unstable.\n
+        Example: C E G# (a C major with the 5th raised)"],
+      "other" => ["\nPower chords: Two note chords with a neutral, but powerful sound.\n
+        Formula: root, perfect 5th
+        Example: C G", "\nsus2: Etherial, 'suspended' sound. 
+        There is generally not much distinction between sus2 and sus4.\n
+        Formula: root, second note of major scale, perfect fifth
+        Example: C D G", "\nsus4: Etherial, 'suspended' sound. 
+        There is generally not much distinction between sus2 and sus4.\n
+        Formula: root, fourth note of major scale, perfect fifth
+        Example: C F G", "\noctave: Chords containing 2 of the same note, often the root, 
+        at different octaves. Simple way to create a huge, epic sound.", 
+        "\n7ths and beyond: Any chord can have additional notes of the scale added in to create a larger sound. 
+        To do this, skip the next note in the scale and add the one after that. 
+        For example, a minor triad, C D# G,can have the C minor scale's A# added in 
+        to create a C minor 7th, C D# G A#. Doing this again would create a 9th, and so on.", 
+        "\nInversions: Notes in a chord do not follow a strict order. Change it up and experiment with different sounds!
+        For example, C major can be played as C E G, E G C, G C E, 
+        or even E E G C to create variations on the same base sound."], 
    }
     @intervals = {
       "major" => ["Major 2nd", "Major 3rd", "Major 6th", "Major 7th"],
