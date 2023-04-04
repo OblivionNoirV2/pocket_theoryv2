@@ -19,7 +19,7 @@ class InputGathering
       opts.banner = "Usage: pt.rb [options]"
 
       #displays when run with --help flag, or nothing
-      opts.on("-m, a, b, c", String, "What kind of sound are you going for?") do |keywords_str|
+      opts.on("-m, a, b, c", String, "Add arguments like -m scales/chords/intervals[major/minor/dissonant/other] \nand any additional arguments seperated by a comma(no space between)") do |keywords_str|
         #split the string up into an array
         keywords_array = keywords_str.split(",")
         #check for proper formatting, like something[something]
@@ -129,8 +129,20 @@ class Results
         Example: C C# D# F G G# A#"],
       "dissonant" => ["\nLocrian: A tense, very dark scale that can sound unstable or scary.\n
         Formula: half, whole, whole, half, whole, whole
-        Example: C C# D# F F# G# A#", "Super Locrian", "Chromatic"],
-      "other" => ["Dorian", "Mixolydian", "Whole Tone", "Hirajoshi"]
+        Example: C C# D# F F# G# A#", "\nSuper Locrian(Altered Scale): A more extreme version of Locrian. Very tense and unstable.\n
+        Formula: half, whole, half, whole, whole, whole
+        Example: C C# D# E F# G# A#", "\nChromatic: The opposite of a scale, pretty much. Any order of notes. 
+        Usually extremely dissonant and unpleasant, more often used in unison with an existing scale."],
+      "other" => ["\nDorian: A unique, hard to describe scale that is often said to sound medieval and folk-ish.\n 
+        Formula: whole, half, whole, whole, whole, half
+        Example: C D D# F G A A#", "\nMixolydian: The Ionian scale with a flattened 7th, 
+        and a very common scale in blues and jazz.\n
+        Formula: whole, whole, half, whole, whole, half
+        Example: C D E F G A A#", "\nWhole Tone: A unique, dreamy, etherial sounding scale with 6 notes instead of 7.\n
+        Formula: whole, whole, whole, whole, whole
+        Example: C D E F# G# A#", "\nHirajoshi: A 5 note scale that sounds very orential or Japanese.\n
+        Formula: whole, half, whole + whole, half
+        Example: C D D# G G#"]
     }
 
     @chords = {
@@ -154,6 +166,7 @@ class Results
     case $concept_used
       when "scales"
         @scales[$emotion_used].each { |scale| puts scale }
+        puts("\nNote that 'scale' and 'mode' are ambiguous in this program for the sake of simplicity.")
       when "chords"
         @chords[$emotion_used].each { |chord| puts chord }
       when "intervals"
