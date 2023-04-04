@@ -16,10 +16,10 @@ class InputGathering
   def parse_keywords()
 
     @parser = OptionParser.new do |opts|
-      opts.banner = "Usage: pt.rb [options]"
+      opts.banner = "Usage: \nAdd arguments like -m scales/chords/intervals[major/minor/dissonant/other] \nand any additional arguments seperated by a comma(no space between)"
 
       #displays when run with --help flag, or nothing
-      opts.on("-m, a, b, c", String, "Add arguments like -m scales/chords/intervals[major/minor/dissonant/other] \nand any additional arguments seperated by a comma(no space between)") do |keywords_str|
+      opts.on("-m, a, b, c", String) do |keywords_str|
         #split the string up into an array
         keywords_array = keywords_str.split(",")
         #check for proper formatting, like something[something]
@@ -87,7 +87,6 @@ class InputGathering
 
 $ig = InputGathering.new()
   def you_screwed_up()
-    puts("Add arguments like -m scales/chords/intervals[major/minor/dissonant/other] \nand any additional arguments seperated by a comma(no space between)")
     puts(@parser)
     $ig.parse_keywords()
   end
@@ -176,15 +175,17 @@ class Results
         or even E E G C to create variations on the same base sound."], 
    }
     @intervals = {
-      "major" => ["Major 2nd", "Major 3rd", "Major 6th", "Major 7th"],
-      "minor" => ["Minor 2nd", "Minor 3rd", "Minor 6th", "Minor 7th"],
-      "dissonant" => ["Diminished", "Augmented"],
-      "other" => ["Perfect 1st", "Perfect 4th", "Perfect 5th", "Perfect 8th"]
+      "major" => ["Major 2nd: 2 semitones", "Major 3rd: 4 semitones", "Major 6th: 9 semitones", "Major 7th: 11 semitones"],
+      "minor" => ["Minor 2nd: 1 semitone", "Minor 3rd: 3 semitones", "Minor 6th: 8 semitones", "Minor 7th: 10 semitones"],
+      "dissonant" => ["Aug 2nd: 3 semitones", "Aug 3rd: 5 semitones", "Aug 4th: 6 semitones", "Aug 5th: 8 semitones", 
+        "Aug 6th: 10 semitones", "Aug 7th: 12 semitones", "Dim 2nd: 1 semitone", 
+        "Dim 3rd: 2 semitones", "Dim 4th: 4 semitones", "Dim 5th: 6 semitones", 
+        "Dim 6th: 7 semitones", "Dim 7th: 9 semitones"],
+      "other" => ["Perfect 4th: 5 semitones", "Perfect 5th: 7 semitones", "Octave: 12 semitones"]
     }
   end
   #give descriptions of each match, how to formulate it
   def evaluate()
-    #puts($input_array)
     #fetch the emotion and concept used from the class above
     ie = InputGathering.new()
     case $concept_used
