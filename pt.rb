@@ -114,29 +114,33 @@ class Results
     @chords = {
       "happy" => ["Major Triad"],
       "sad" => ["Minor Triad"],
-      "dissonant" => ["Diminished, Augmented"],
+      "dissonant" => ["Diminished", "Augmented"],
       "other" => ["Power chords", "sus2", "sus4", "7ths and beyond", "Inversions"]
    }
     @intervals = {
       "happy" => ["Major 2nd", "Major 3rd", "Major 6th", "Major 7th"],
       "sad" => ["Minor 2nd", "Minor 3rd", "Minor 6th", "Minor 7th"],
-      "dissonant" => "[Dimninished, Augmented]",
+      "dissonant" => ["Diminished", "Augmented"],
       "other" => ["Perfect 1st", "Perfect 4th", "Perfect 5th", "Perfect 8th"]
     }
-  end
-
-  def display_results()
-
   end
   #give descriptions of each match, how to formulate it
   def evaluate()
     #puts($input_array)
     #fetch the emotion and concept used from the class above
     ie = InputGathering.new()
-    puts $emotion_used
-    puts $concept_used
+    #puts $emotion_used
+    #puts $concept_used
+
+    case $concept_used
+      when "scales"
+        @scales[$emotion_used].each { |scale| puts scale }
+      when "chords"
+        @chords[$emotion_used].each { |chord| puts chord }
+      when "intervals"
+        @intervals[$emotion_used].each { |interval| puts interval }
+    end  
   end
-  
 end
 
 rs = Results.new()
