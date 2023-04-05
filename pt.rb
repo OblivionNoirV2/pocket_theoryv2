@@ -16,7 +16,7 @@ class InputGathering
   def parse_keywords()
 
     @parser = OptionParser.new do |opts|
-      opts.banner = "Usage: \nAdd arguments like -m scales/chords/intervals[major/minor/dissonant/other] \nand any additional arguments seperated by a comma(no space between)"
+      opts.banner = "Usage: \nAdd arguments like -m scales/chords/intervals[major/minor/dissonant/other]"
 
       #displays when run with --help flag, or nothing
       opts.on("-m, a, b, c", String) do |keywords_str|
