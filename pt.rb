@@ -13,8 +13,8 @@ class InputGathering
     ]
     @emotion_found = false
     @concept_found = false
-    $emotions_used = []
-    $concepts_used = []
+    $final_eval_array = []
+    #used in last while loop
   end 
   def parse_keywords()
 
@@ -77,14 +77,14 @@ class InputGathering
           @emotion_found = true
           #Note that this is seperating the emotion from the keyword, as it should
           #problem is it's only evaluating the first part of the keywords array
-          $emotions_used.push(e)
+          $final_eval_array.push(e)
         end
       end
 
       @concept_array.each do |c|
         if keyword.include?(c)
           @concept_found = true
-          $concepts_used.push(c)
+          $final_eval_array.push(c)
         end
       end
       #This is true if both bools are true
@@ -105,11 +105,11 @@ $input_array = $ig.parse_keywords()
 #other flag options, intervals (flagged with minor, major, etc)
 
 #get options from above, then determine what to display 
-#should be easy, just check what it contains and use a switch to match it
+
 class Results
 
   def initialize()
-
+  
     @scales = {
       "major" => ["Major(Ionian): A simple, happy sounding scale.\n
         Formula: whole, whole, half, whole, whole, whole, half
@@ -193,22 +193,21 @@ class Results
   end
   #give descriptions of each match, how to formulate it
   def evaluate()
+    #This has an e, c, e, c pattern
+    print ($final_eval_array)
+    increment_c = -1
+    #not sure why this works, but it does
+    while increment_c.abs <= $final_eval_array.length do
 
-    #Lists all the emotions and concepts used
-    puts($emotions_used)
-    puts($concepts_used)
-=begin
-      case $concept_used
-        when "scales"
-          @scales[$emotion_used].each { |scale| puts scale }
-          puts("\nNote that 'scale' and 'mode' are ambiguous in this program for the sake of simplicity.")
-        when "chords"
-          @chords[$emotion_used].each { |chord| puts chord }
-        when "intervals"
-          @intervals[$emotion_used].each { |interval| puts interval }
-      end 
-=end
+      current_c = $final_eval_array[increment_c]
+      current_e = $final_eval_array[increment_c - 1]
+      increment_c -= 2
+      puts"current c:" + current_c.to_s
+      puts"current e:" + current_e.to_s
+
+
     end
+  end
 end
 
 rs = Results.new()
