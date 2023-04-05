@@ -21,12 +21,12 @@ class InputGathering
       #displays when run with --help flag, or nothing
       opts.on("-m, a, b, c", String) do |keywords_str|
         #split the string up into an array
-        keywords_array = keywords_str.split(",")
+        $keywords_array = keywords_str.split(",")
         #check for proper formatting, like something[something]
-        keywords_array.map do |keyword|
+        $keywords_array.map do |keyword|
           #also check that it fits the chord/scale/interval[emotion] format
           if keyword.match?(/\A\w+\[[\w\s]+\]\z/) && are_args_included(keyword)
-            return keywords_array 
+            return $keywords_array 
           else
             you_screwed_up()
           end
@@ -65,24 +65,29 @@ class InputGathering
   #and the words chord/scale/interval
     emotion_found = false
     concept_found = false
-
-    @emotions_array.each do |e|
-      if keyword.include?(e)
-        emotion_found = true
-        $emotion_used = e
-        break
+    $emotions_used = []
+    $concepts_used = []
+      #try assigning number of args to a variable, and looping for that amt?
+      @emotions_array.each do |e|
+        if keyword.include?(e)
+          emotion_found = true
+          #Note that this is seperating the emotion from the keyword, as it should
+          #problem is it's only evaluating the first part of the keywords array
+          puts e
+          $emotions_used.push(e)
+        end
       end
-    end
 
-    @concept_array.each do |c|
-      if keyword.include?(c)
-        concept_found = true
-        $concept_used = c
-        break
+      @concept_array.each do |c|
+        if keyword.include?(c)
+          concept_found = true
+          puts c
+          $concepts_used.push(c)
+        end
       end
-    end
-    #This is true if both bools are true
-    return emotion_found && concept_found
+      #This is true if both bools are true
+      return emotion_found && concept_found
+    
   end
 
 $ig = InputGathering.new()
@@ -188,16 +193,21 @@ class Results
   def evaluate()
     #fetch the emotion and concept used from the class above
     ie = InputGathering.new()
-    case $concept_used
-      when "scales"
-        @scales[$emotion_used].each { |scale| puts scale }
-        puts("\nNote that 'scale' and 'mode' are ambiguous in this program for the sake of simplicity.")
-      when "chords"
-        @chords[$emotion_used].each { |chord| puts chord }
-      when "intervals"
-        @intervals[$emotion_used].each { |interval| puts interval }
-    end 
+    #puts($emotions_used)
+    #puts($concepts_used)
 
+
+    for i in $keywords_array do
+      case $concept_used
+        when "scales"
+          @scales[$emotion_used].each { |scale| puts scale }
+          puts("\nNote that 'scale' and 'mode' are ambiguous in this program for the sake of simplicity.")
+        when "chords"
+          @chords[$emotion_used].each { |chord| puts chord }
+        when "intervals"
+          @intervals[$emotion_used].each { |interval| puts interval }
+      end 
+    end
   end
 end
 
