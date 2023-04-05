@@ -11,7 +11,10 @@ class InputGathering
     @concept_array = [
       "chords", "scales", "intervals"
     ]
-
+    @emotion_found = false
+    @concept_found = false
+    $emotions_used = []
+    $concepts_used = []
   end 
   def parse_keywords()
 
@@ -23,11 +26,14 @@ class InputGathering
         #split the string up into an array
         $keywords_array = keywords_str.split(",")
         #check for proper formatting, like something[something]
-        $keywords_array.map do |keyword|
+        all_keywords_valid = true
+        $keywords_array.each do |keyword|
           #also check that it fits the chord/scale/interval[emotion] format
           if keyword.match?(/\A\w+\[[\w\s]+\]\z/) && are_args_included(keyword)
-            return $keywords_array 
+            next
           else
+            all_keywords_valid = false
+  
             you_screwed_up()
           end
         end
@@ -63,30 +69,26 @@ class InputGathering
   def are_args_included(keyword)
   #check if the input contains any of the array options for emotions 
   #and the words chord/scale/interval
-    emotion_found = false
-    concept_found = false
-    $emotions_used = []
-    $concepts_used = []
+
+
       #try assigning number of args to a variable, and looping for that amt?
       @emotions_array.each do |e|
         if keyword.include?(e)
-          emotion_found = true
+          @emotion_found = true
           #Note that this is seperating the emotion from the keyword, as it should
           #problem is it's only evaluating the first part of the keywords array
-          puts e
           $emotions_used.push(e)
         end
       end
 
       @concept_array.each do |c|
         if keyword.include?(c)
-          concept_found = true
-          puts c
+          @concept_found = true
           $concepts_used.push(c)
         end
       end
       #This is true if both bools are true
-      return emotion_found && concept_found
+      return @emotion_found && @concept_found
     
   end
 
@@ -191,13 +193,11 @@ class Results
   end
   #give descriptions of each match, how to formulate it
   def evaluate()
-    #fetch the emotion and concept used from the class above
-    ie = InputGathering.new()
-    #puts($emotions_used)
-    #puts($concepts_used)
 
-
-    for i in $keywords_array do
+    #Lists all the emotions and concepts used
+    puts($emotions_used)
+    puts($concepts_used)
+=begin
       case $concept_used
         when "scales"
           @scales[$emotion_used].each { |scale| puts scale }
@@ -207,8 +207,8 @@ class Results
         when "intervals"
           @intervals[$emotion_used].each { |interval| puts interval }
       end 
+=end
     end
-  end
 end
 
 rs = Results.new()
