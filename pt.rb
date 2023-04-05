@@ -11,10 +11,7 @@ class InputGathering
     @concept_array = [
       "chords", "scales", "intervals"
     ]
-    @emotion_found = false
-    @concept_found = false
-    $final_eval_array = []
-    #used in last while loop
+
   end 
   def parse_keywords()
 
@@ -24,16 +21,13 @@ class InputGathering
       #displays when run with --help flag, or nothing
       opts.on("-m, a, b, c", String) do |keywords_str|
         #split the string up into an array
-        $keywords_array = keywords_str.split(",")
+        keywords_array = keywords_str.split(",")
         #check for proper formatting, like something[something]
-        all_keywords_valid = true
-        $keywords_array.each do |keyword|
+        keywords_array.map do |keyword|
           #also check that it fits the chord/scale/interval[emotion] format
           if keyword.match?(/\A\w+\[[\w\s]+\]\z/) && are_args_included(keyword)
-            next
+            return keywords_array 
           else
-            all_keywords_valid = false
-  
             you_screwed_up()
           end
         end
@@ -69,27 +63,26 @@ class InputGathering
   def are_args_included(keyword)
   #check if the input contains any of the array options for emotions 
   #and the words chord/scale/interval
+    emotion_found = false
+    concept_found = false
 
-
-      #try assigning number of args to a variable, and looping for that amt?
-      @emotions_array.each do |e|
-        if keyword.include?(e)
-          @emotion_found = true
-          #Note that this is seperating the emotion from the keyword, as it should
-          #problem is it's only evaluating the first part of the keywords array
-          $final_eval_array.push(e)
-        end
+    @emotions_array.each do |e|
+      if keyword.include?(e)
+        emotion_found = true
+        $emotion_used = e
+        break
       end
+    end
 
-      @concept_array.each do |c|
-        if keyword.include?(c)
-          @concept_found = true
-          $final_eval_array.push(c)
-        end
+    @concept_array.each do |c|
+      if keyword.include?(c)
+        concept_found = true
+        $concept_used = c
+        break
       end
-      #This is true if both bools are true
-      return @emotion_found && @concept_found
-    
+    end
+    #This is true if both bools are true
+    return emotion_found && concept_found
   end
 
 $ig = InputGathering.new()
@@ -105,11 +98,11 @@ $input_array = $ig.parse_keywords()
 #other flag options, intervals (flagged with minor, major, etc)
 
 #get options from above, then determine what to display 
-
+#should be easy, just check what it contains and use a switch to match it
 class Results
 
   def initialize()
-  
+
     @scales = {
       "major" => ["Major(Ionian): A simple, happy sounding scale.\n
         Formula: whole, whole, half, whole, whole, whole, half
@@ -193,20 +186,18 @@ class Results
   end
   #give descriptions of each match, how to formulate it
   def evaluate()
-    #This has an e, c, e, c pattern
-    print ($final_eval_array)
-    increment_c = -1
-    #not sure why this works, but it does
-    while increment_c.abs <= $final_eval_array.length do
+    #fetch the emotion and concept used from the class above
+    ie = InputGathering.new()
+    case $concept_used
+      when "scales"
+        @scales[$emotion_used].each { |scale| puts scale }
+        puts("\nNote that 'scale' and 'mode' are ambiguous in this program for the sake of simplicity.")
+      when "chords"
+        @chords[$emotion_used].each { |chord| puts chord }
+      when "intervals"
+        @intervals[$emotion_used].each { |interval| puts interval }
+    end 
 
-      current_c = $final_eval_array[increment_c]
-      current_e = $final_eval_array[increment_c - 1]
-      increment_c -= 2
-      puts"current c:" + current_c.to_s
-      puts"current e:" + current_e.to_s
-
-
-    end
   end
 end
 
